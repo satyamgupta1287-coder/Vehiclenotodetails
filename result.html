@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Result</title>
+
+<style>
+body{
+  background:#000;
+  color:#00ffc3;
+  font-family:monospace;
+}
+
+.card{
+  background:#111;
+  border:1px solid #00ffc3;
+  margin:15px;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 0 15px #00ffc3;
+}
+
+.highlight{
+  color:#00ff00;
+  font-weight:bold;
+}
+
+.log{
+  width:80%;
+  margin:20px auto;
+  border:1px solid #00ffc3;
+  padding:10px;
+  height:120px;
+  overflow:hidden;
+  box-shadow:0 0 10px #00ffc3;
+}
+
+iframe{
+  width:90%;
+  height:250px;
+  border:0;
+  margin:15px;
+  border-radius:10px;
+  box-shadow:0 0 15px #00ffc3;
+}
+
+.dev{
+  position:fixed;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+}
+
+.disclaimer{
+  text-align:center;
+  font-size:12px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<h2 style="text-align:center">⚡ TRACE RESULT ⚡</h2>
+
+<div class="log" id="log"></div>
+
+<div id="output"></div>
+
+<div class="disclaimer">⚠ Educational use only</div>
+<div class="dev">⚡ Developed by Satyam Gupta ⚡</div>
+
+<script>
+
+let vehicle=new URLSearchParams(window.location.search).get("vehicle");
+let out=document.getElementById("output");
+let log=document.getElementById("log");
+
+let logs=[
+"> Connecting...",
+"> Fetching data...",
+"> AI analyzing...",
+"> Preparing output..."
+];
+
+let i=0;
+setInterval(()=>{
+  if(i<logs.length){
+    let d=document.createElement("div");
+    d.innerText=logs[i];
+    log.appendChild(d);
+    log.scrollTop=log.scrollHeight;
+    i++;
+  }
+},500);
+
+setTimeout(start,2000);
+
+async function start(){
+  try{
+
+    let res=await fetch("https://ft-osint.onrender.com/api/rc?key=ft-key-tr-ettigvhtdpo7&owner="+vehicle);
+    let json=await res.json();
+    let r=json.result;
+
+    show("👤 OWNER DETAILS",r["Ownership Details"]);
+    show("🚗 VEHICLE INFO",r["Vehicle Details"]);
+    show("🛡 INSURANCE",r["Insurance Information"]);
+
+    // MAP
+    let city=r["Basic RTO Info"]?.["City Name"]||"India";
+    let map=document.createElement("iframe");
+    map.src="https://maps.google.com/maps?q="+city+"&output=embed";
+    out.appendChild(map);
+
+  }catch{
+    out.innerHTML="❌ Failed to load data";
+  }
+}
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+async function show(title,data){
+
+  if(!data) return;
+
+  let card=document.createElement("div");
+  card.className="card";
+
+  let h=document.createElement("h3");
+  h.innerText=title;
+  card.appendChild(h);
+
+  out.appendChild(card);
+
+  for(let key in data){
+
+    let row=document.createElement("div");
+    card.appendChild(row);
+
+    let label=key+": ";
+    let value=data[key];
+
+    if(key.includes("Name")||key.includes("Number")){
+      value="<span class='highlight'>"+value+"</span>";
+    }
+
+    // TYPE LABEL ONLY
+    for(let char of label){
+      row.innerHTML+=char;
+      await delay(10);
+    }
+
+    // ADD VALUE SAFE
+    row.innerHTML+=value;
+
+    await delay(80);
+  }
+}
+
+</script>
+
+</body>
+</html>
