@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scanning</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:#000;
+  color:#00ffc3;
+  font-family:monospace;
+  padding:20px;
+}
+
+/* 🔥 CENTER CONTAINER */
+.container{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+}
+
+/* 🔥 TEXT LINE */
+.line{
+  margin:6px 0;
+}
+
+/* 🔥 PROGRESS BAR */
+.bar{
+  width:100%;
+  height:12px;
+  background:#111;
+  margin-top:20px;
+  border-radius:10px;
+}
+
+.fill{
+  height:100%;
+  width:0%;
+  background:#00ffc3;
+  border-radius:10px;
+}
+
+/* 🔥 FOOTER */
+.dev{
+  text-align:center;
+  margin-top:30px;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>⚡ SCANNING VEHICLE ⚡</h2>
+
+<div id="log"></div>
+
+<div class="bar">
+<div class="fill" id="fill"></div>
+</div>
+
+<div id="percent">0%</div>
+
+<div class="dev">⚡ Developed by Satyam Gupta ⚡</div>
+
+</div>
+
+<script>
+let v=new URLSearchParams(window.location.search).get("vehicle");
+
+let log=document.getElementById("log");
+let fill=document.getElementById("fill");
+let percent=document.getElementById("percent");
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+/* 🔥 TYPE EFFECT */
+async function type(text){
+  let d=document.createElement("div");
+  d.className="line";
+  log.appendChild(d);
+
+  for(let c of text){
+    d.innerHTML+=c;
+    await delay(8);
+  }
+}
+
+/* 🔥 MAIN */
+async function start(){
+
+  let lines=[
+    "> Initializing system...",
+    "> Connecting to secure server...",
+    "> Bypassing firewall...",
+    "> Fetching vehicle data...",
+    "> Decrypting information..."
+  ];
+
+  for(let l of lines){
+    await type(l);
+    await delay(200);
+  }
+
+  let p=0;
+  let i=setInterval(()=>{
+    p+=5;
+    fill.style.width=p+"%";
+    percent.innerText=p+"%";
+
+    if(p>=100){
+      clearInterval(i);
+      setTimeout(()=>{
+        window.location.href="result.html?vehicle="+v;
+      },500);
+    }
+  },120);
+}
+
+start();
+</script>
+
+</body>
+</html>

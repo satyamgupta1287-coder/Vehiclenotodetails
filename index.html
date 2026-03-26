@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle Trace</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#000,#001a14);
+  color:#00ffc3;
+  font-family:monospace;
+}
+
+/* 🔥 MAIN CONTAINER */
+.box{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  padding:25px;
+  box-sizing:border-box;
+  margin-top:60px;
+  text-align:center;
+}
+
+/* 🔥 SAME SIZE BOXES */
+.plate, input{
+  width:100%;
+  padding:18px;
+  border:2px solid #00ffc3;
+  border-radius:14px;
+  box-sizing:border-box;
+  font-size:20px;
+}
+
+/* 🔥 NUMBER PLATE */
+.plate{
+  background:#111;
+  text-align:center;
+  letter-spacing:2px;
+  margin-bottom:20px;
+  box-shadow:0 0 15px #00ffc3;
+  animation:glow 2s infinite alternate;
+}
+
+/* 🔥 INPUT */
+input{
+  background:#000;
+  color:#00ffc3;
+  margin-bottom:12px;
+  outline:none;
+  transition:0.3s;
+}
+
+/* 🔥 INPUT FOCUS */
+input:focus{
+  box-shadow:0 0 20px #00ffc3;
+  transform:scale(1.02);
+}
+
+/* 🔥 BUTTON */
+button{
+  width:100%;
+  padding:16px;
+  background:#00ffc3;
+  border:none;
+  border-radius:14px;
+  font-size:17px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:active{
+  transform:scale(0.95);
+}
+
+/* 🔥 CONTACT */
+.contact{
+  margin-top:25px;
+}
+
+.contact a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:12px 0;
+  color:#00ff9f;
+  text-decoration:none;
+  font-size:17px;
+  transition:0.3s;
+}
+
+.contact a:hover{
+  color:#00ffc3;
+  transform:scale(1.05);
+}
+
+.contact img{
+  width:26px;
+}
+
+/* 🔥 FOOTER */
+.dev{
+  margin-top:20px;
+  text-align:center;
+}
+
+.disclaimer{
+  font-size:11px;
+  color:#888;
+}
+
+/* 🔥 GLOW ANIMATION */
+@keyframes glow{
+  from{ box-shadow:0 0 10px #00ffc3; }
+  to{ box-shadow:0 0 25px #00ffc3; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>⚡ VEHICLE TRACE SYSTEM ⚡</h2>
+
+<!-- 🔥 NUMBER PLATE -->
+<div class="plate" id="plate">HR00XX0000</div>
+
+<!-- 🔥 INPUT -->
+<input id="vehicle" placeholder="ENTER VEHICLE NUMBER" oninput="updatePlate()">
+
+<!-- 🔥 BUTTON -->
+<button onclick="go()">SCAN</button>
+
+<!-- 🔥 CONTACT -->
+<div class="contact">
+
+<a href="https://www.instagram.com/satyam_________gupta?igsh=MTJhNTIwZGQ4anF2Zg==" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"> Instagram
+</a>
+
+<a href="https://t.me/satyamgupta9999" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"> Telegram
+</a>
+
+</div>
+
+<div class="disclaimer">⚠ Educational use only</div>
+<div class="dev">⚡ Developed by Satyam Gupta ⚡</div>
+
+</div>
+
+<script>
+function updatePlate(){
+  let val=document.getElementById("vehicle").value.toUpperCase();
+  document.getElementById("plate").innerText=val||"HR00XX0000";
+}
+
+function go(){
+  let v=document.getElementById("vehicle").value;
+  if(!v) return alert("Enter vehicle number");
+  window.location.href="loading.html?vehicle="+v;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trace Result</title>
+
+<style>
+body{
+  margin:0;
+  padding:10px;
+  background:#000;
+  color:#00ffc3;
+  font-family:monospace;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  margin:auto;
+}
+
+.box{
+  background:#0a0a0a;
+  border:1px solid #00ffc3;
+  border-radius:12px;
+  padding:15px;
+  margin:12px 0;
+  box-shadow:0 0 15px #00ffc3;
+}
+
+.title{
+  font-size:18px;
+  margin-bottom:10px;
+  color:#00ffc3;
+}
+
+.highlight{
+  color:#00ff00;
+}
+
+.dev{
+  text-align:center;
+  margin-top:10px;
+  font-size:12px;
+}
+
+.disclaimer{
+  text-align:center;
+  font-size:11px;
+  color:#888;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 style="text-align:center">⚡ TRACE RESULT ⚡</h2>
+
+<div id="output"></div>
+
+<div class="disclaimer">⚠ Educational use only</div>
+<div class="dev">⚡ Developed by Satyam Gupta ⚡</div>
+
+</div>
+
+<script>
+
+let vehicle=new URLSearchParams(window.location.search).get("vehicle");
+let out=document.getElementById("output");
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// 🔥 typing line
+async function typeLine(el,text){
+  for(let i=0;i<text.length;i++){
+    el.innerHTML+=text[i];
+    await delay(8);
+  }
+}
+
+// 🔥 section show
+async function show(title,data){
+
+  if(!data) return;
+
+  let box=document.createElement("div");
+  box.className="box";
+
+  let h=document.createElement("div");
+  h.className="title";
+  h.innerText="> "+title;
+  box.appendChild(h);
+
+  out.appendChild(box);
+
+  for(let key in data){
+
+    let row=document.createElement("div");
+    box.appendChild(row);
+
+    let value=data[key] || "N/A";
+
+    if(key.includes("Name")||key.includes("Number")){
+      value="<span class='highlight'>"+value+"</span>";
+    }
+
+    await typeLine(row, key + ": ");
+    row.innerHTML+=value;
+
+    await delay(60);
+  }
+}
+
+// 🔥 fake scanning effect
+async function intro(){
+  let scan=document.createElement("div");
+  out.appendChild(scan);
+
+  let lines=[
+    "> Initializing system...",
+    "> Connecting to secure server...",
+    "> Fetching encrypted data...",
+    "> Decrypting information..."
+  ];
+
+  for(let l of lines){
+    let row=document.createElement("div");
+    scan.appendChild(row);
+    await typeLine(row,l);
+    await delay(200);
+  }
+
+  await delay(300);
+  scan.remove();
+}
+
+// 🔥 main
+async function start(){
+  try{
+
+    await intro();
+
+    let res=await fetch("https://ft-osint.onrender.com/api/rc?key=ft-key-tr-ettigvhtdpo7&owner="+vehicle);
+    let json=await res.json();
+    let r=json.result;
+
+    await show("OWNER DETAILS",r["Ownership Details"]);
+    await show("VEHICLE INFO",r["Vehicle Details"]);
+    await show("INSURANCE",r["Insurance Information"]);
+    await show("IMPORTANT DETAILS",r["Important Dates & Validity"]);
+    await show("OTHER INFO",r["Other Information"]);
+
+  }catch{
+    out.innerHTML="❌ Failed to load data";
+  }
+}
+
+start();
+
+</script>
+
+</body>
+</html>
